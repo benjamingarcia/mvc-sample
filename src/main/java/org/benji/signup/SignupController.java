@@ -23,7 +23,7 @@ public class SignupController {
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping(value = "signuup")
+	@RequestMapping(value = "signup")
 	public String signup(Model model) {
 		model.addAttribute(new SignupForm());
         return SIGNUP_VIEW_NAME;
@@ -38,6 +38,6 @@ public class SignupController {
 		userService.signin(account);
         // see /WEB-INF/i18n/messages.properties and /WEB-INF/views/homeSignedIn.html
         MessageHelper.addSuccessAttribute(ra, "signup.success");
-		return "redirect:http://www.google.fr";
+		return "redirect:/";
 	}
 }
