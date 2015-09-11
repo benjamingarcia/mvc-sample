@@ -28,7 +28,7 @@ public class UserService implements UserDetailsService {
 		if(account == null) {
 			throw new UsernameNotFoundException("user not found");
 		}
-		return null;
+		return createUser(account);
 	}
 	
 	public void signin(Account account) {
@@ -36,9 +36,12 @@ public class UserService implements UserDetailsService {
 	}
 	
 	private Authentication authenticate(Account account) {
-		return new UsernamePasswordAuthenticationToken(null, null, Collections.singleton(createAuthority(account)));
+		return new UsernamePasswordAuthenticationToken(createUser(account), null, Collections.singleton(createAuthority(account)));
 	}
 
+	private User createUser(Account account) {
+		return new User(account.getEmail(), account.getPassword(), Collections.singleton(createAuthority(account)));
+	}
 
 	private GrantedAuthority createAuthority(Account account) {
 		return new SimpleGrantedAuthority(account.getRole());
