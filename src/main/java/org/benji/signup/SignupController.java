@@ -23,7 +23,7 @@ public class SignupController {
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping(value = "signuup")
+	@RequestMapping(value = "signup")
 	public String signup(Model model) {
 		model.addAttribute(new SignupForm());
         return SIGNUP_VIEW_NAME;
