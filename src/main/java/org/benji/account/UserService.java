@@ -39,7 +39,7 @@ public class UserService implements UserDetailsService {
 	}
 	
 	private Authentication authenticate(Account account) {
-		return new UsernamePasswordAuthenticationToken(null, null, Collections.singleton(createAuthority(account)));
+		return new UsernamePasswordAuthenticationToken(account.getEmail(), account.getPassword(), Collections.singleton(createAuthority(account)));
 	}
 
 
