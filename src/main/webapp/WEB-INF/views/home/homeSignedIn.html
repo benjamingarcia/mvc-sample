@@ -19,6 +19,31 @@
     <p>
         Welcome to the Spring MVC Quickstart application!
     </p>
+
+    <table class="table table-bordered" th:if="${users != null}">
+        <thead>
+        <tr>
+            <th th:text="#{msgs.headers.id}">ID</th>
+            <th th:text="#{msgs.headers.email}">email</th>
+            <th th:text="#{msgs.headers.role}">role</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}">ID</td>
+            <td th:text="${user.email}">email</td>
+            <td th:text="${user.role}">role</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form th:if="${enabled == true}" method="POST" th:action="@{/delete}" th:object="${deleteForm}">
+        <div class="form-group">
+            <label>Enter the email of an account to delete</label>
+            <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email"/>
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
 </div>
 </body>
 </html>

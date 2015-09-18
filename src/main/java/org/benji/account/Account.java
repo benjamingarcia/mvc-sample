@@ -7,10 +7,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "account")
-@NamedQuery(name = Account.FIND_BY_EMAIL, query = "select a from Account a where a.email = :email")
+
+@NamedQueries({
+		@NamedQuery(name = Account.FIND_BY_EMAIL, query = "select a from Account a where a.email = :email"),
+		@NamedQuery(name = Account.FIND_ALL_USERS, query = "select a from Account a")
+})
 public class Account implements java.io.Serializable {
 
 	public static final String FIND_BY_EMAIL = "Account.findByEmail";
+	public static final String FIND_ALL_USERS = "Account.findAllUsers";
 
 	@Id
 	@GeneratedValue

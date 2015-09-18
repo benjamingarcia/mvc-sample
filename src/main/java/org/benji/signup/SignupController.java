@@ -12,6 +12,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.benji.account.*;
 import org.benji.support.web.*;
 
+import java.util.List;
+
 @Controller
 public class SignupController {
 
@@ -39,5 +41,10 @@ public class SignupController {
         // see /WEB-INF/i18n/messages.properties and /WEB-INF/views/homeSignedIn.html
         MessageHelper.addSuccessAttribute(ra, "signup.success");
 		return "home/homeSignedIn";
+	}
+
+	@ModelAttribute("users")
+	public List<Account> getAllUsers() {
+		return accountRepository.getAllAccounts();
 	}
 }
