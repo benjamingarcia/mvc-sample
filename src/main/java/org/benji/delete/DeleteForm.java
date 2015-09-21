@@ -1,10 +1,7 @@
 package org.benji.delete;
 
-import org.benji.account.Account;
-import org.benji.account.AccountRepository;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Created by theoz on 18/09/2015.
