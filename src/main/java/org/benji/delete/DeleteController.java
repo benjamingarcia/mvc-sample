@@ -33,17 +33,21 @@ public class DeleteController {
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public String deleteUser(@Valid @ModelAttribute final DeleteForm form, final Errors errors, final Model model) {
+    public String deleteUser(@Valid @ModelAttribute final DeleteForm form, final Errors errors, final Model model, final Principal principal) {
         if (!errors.hasErrors()) {
-            final Account account = accountRepository.findByEmail(form.getEmail());
-            if (account != null) {
-                if (accountRepository.deleteUserByEmail(form.getEmail()))
-                    MessageHelper.addInfoAttribute(model, "delete.success", form.getEmail());
+            if (principal.getName().equals(form.getEmail()))
+                MessageHelper.addWarningAttribute(model, "delete.error.selfDelete");
+            else {
+                final Account account = accountRepository.findByEmail(form.getEmail());
+                if (account != null) {
+                    if (accountRepository.deleteUserByEmail(form.getEmail()))
+                        MessageHelper.addInfoAttribute(model, "delete.success", form.getEmail());
+                    else
+                        MessageHelper.addErrorAttribute(model, "delete.error.unknown", form.getEmail());
+                }
                 else
-                    MessageHelper.addErrorAttribute(model, "delete.error.unknown", form.getEmail());
+                    MessageHelper.addErrorAttribute(model, "delete.error.notFound", form.getEmail());
             }
-            else
-                MessageHelper.addErrorAttribute(model, "delete.error.notFound", form.getEmail());
         }
         else
             MessageHelper.addErrorAttribute(model, "delete.error", errors.getAllErrors());
@@ -52,7 +56,7 @@ public class DeleteController {
     }
 
     @ModelAttribute("enabled")
-    public boolean isEnabled() {
+    public boolean enabled() {
         return true;
     }
 }
