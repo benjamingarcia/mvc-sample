@@ -32,12 +32,13 @@ public class SignupController {
 	}
 	
 	@RequestMapping(value = "signup", method = RequestMethod.POST)
-	public String signup(@Valid @ModelAttribute SignupForm signupForm, Errors errors, RedirectAttributes ra) {
+	public String signup(@Valid @ModelAttribute SignupForm signupForm, Errors errors, RedirectAttributes ra, Model model) {
 		if (errors.hasErrors()) {
 			return SIGNUP_VIEW_NAME;
 		}
 		Account account = accountRepository.save(signupForm.createAccount());
 		userService.signin(account);
+		model.addAttribute("users", accountRepository.getAllAccounts());
         // see /WEB-INF/i18n/messages.properties and /WEB-INF/views/homeSignedIn.html
         MessageHelper.addSuccessAttribute(ra, "signup.success");
 		return "home/homeSignedIn";
