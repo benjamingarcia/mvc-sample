@@ -1,16 +1,22 @@
 package org.benji.account;
 
-import java.util.Collections;
-
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.*;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.Collections;
+
+@Service
 public class UserService implements UserDetailsService {
 	
 	@Autowired
@@ -31,15 +37,17 @@ public class UserService implements UserDetailsService {
 		if(account == null) {
 			throw new UsernameNotFoundException("user not found");
 		}
-		return null;
+        final ArrayList authorities = new ArrayList<>();
+        authorities.add(createAuthority(account));
+		return new User(account.getEmail(), account.getPassword(), authorities);
 	}
-	
+
 	public void signin(Account account) {
 		SecurityContextHolder.getContext().setAuthentication(authenticate(account));
 	}
 	
 	private Authentication authenticate(Account account) {
-		return new UsernamePasswordAuthenticationToken(null, null, Collections.singleton(createAuthority(account)));
+		return new UsernamePasswordAuthenticationToken(account.getEmail(), account.getPassword(), Collections.singleton(createAuthority(account)));
 	}
 
 

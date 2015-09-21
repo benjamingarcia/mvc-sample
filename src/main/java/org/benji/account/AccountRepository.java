@@ -1,11 +1,14 @@
 package org.benji.account;
 
-import javax.persistence.*;
-import javax.inject.Inject;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
+import java.util.List;
 
 @Repository
 @Transactional(readOnly = true)
@@ -23,6 +26,17 @@ public class AccountRepository {
 		entityManager.persist(account);
 		return account;
 	}
+
+    @Transactional
+    public boolean deleteUserByEmail(final String email) {
+        final Account account = findByEmail(email);
+        if (account != null) {
+            entityManager.remove(findByEmail(email));
+            return true;
+        }
+        else
+            return false;
+    }
 	
 	public Account findByEmail(String email) {
 		try {
@@ -33,4 +47,14 @@ public class AccountRepository {
 			return null;
 		}
 	}
+
+	public List<Account> getAllAccounts() {
+		try {
+			return entityManager.createNamedQuery(Account.FIND_ALL_USERS, Account.class).getResultList();
+		} catch (PersistenceException e) {
+			return null;
+		}
+	}
+
+
 }

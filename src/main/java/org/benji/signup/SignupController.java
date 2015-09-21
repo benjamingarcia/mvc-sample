@@ -12,6 +12,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.benji.account.*;
 import org.benji.support.web.*;
 
+import java.util.List;
+
 @Controller
 public class SignupController {
 
@@ -23,21 +25,27 @@ public class SignupController {
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping(value = "signuup")
+	@RequestMapping(value = "signup")
 	public String signup(Model model) {
 		model.addAttribute(new SignupForm());
         return SIGNUP_VIEW_NAME;
 	}
 	
 	@RequestMapping(value = "signup", method = RequestMethod.POST)
-	public String signup(@Valid @ModelAttribute SignupForm signupForm, Errors errors, RedirectAttributes ra) {
+	public String signup(@Valid @ModelAttribute SignupForm signupForm, Errors errors, RedirectAttributes ra, Model model) {
 		if (errors.hasErrors()) {
 			return SIGNUP_VIEW_NAME;
 		}
 		Account account = accountRepository.save(signupForm.createAccount());
 		userService.signin(account);
+		model.addAttribute("users", accountRepository.getAllAccounts());
         // see /WEB-INF/i18n/messages.properties and /WEB-INF/views/homeSignedIn.html
         MessageHelper.addSuccessAttribute(ra, "signup.success");
-		return "redirect:http://www.google.fr";
+		return "home/homeSignedIn";
+	}
+
+	@ModelAttribute("users")
+	public List<Account> getAllUsers() {
+		return accountRepository.getAllAccounts();
 	}
 }
