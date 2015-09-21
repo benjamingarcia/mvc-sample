@@ -26,6 +26,7 @@ public class DeleteController {
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public String deleteUser(final Principal principal, final Model model) {
+        model.addAttribute("enabled", true);
         if (principal != null)
             return "home/homeSignedIn";
         else
@@ -53,10 +54,5 @@ public class DeleteController {
             MessageHelper.addErrorAttribute(model, "delete.error", errors.getAllErrors());
 
         return "home/homeSignedIn";
-    }
-
-    @ModelAttribute("enabled")
-    public boolean enabled() {
-        return true;
     }
 }
