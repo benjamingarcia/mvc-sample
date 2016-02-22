@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Remove account</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<div class="container">
+    <th:block th:if="${message != null}">
+        <!-- /* The message code is returned from the @Controller */ -->
+        <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=#{${message.message}(${removedAccount})})">&nbsp;</div>
+    </th:block>
+
+    <h1>Removed : <div th:text="${removedAccount}"></div></h1>
+
+
+    <form class="form-narrow form-horizontal" method="post" th:action="@{/removeaccount}" th:object="${removeAccountForm}">
+        <!--/* Show general error message when form contains errors */-->
+        <th:block th:if="${#fields.hasErrors('${removeAccountForm.*}')}">
+            <div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
+        </th:block>
+        <fieldset>
+            <legend>Account to remove</legend>
+            <div class="form-group" th:classappend="${#fields.hasErrors('email')}? 'has-error'">
+                <label for="email" class="col-lg-2 control-label">Email</label>
+                <div class="col-lg-10">
+                    <input type="text" class="form-control" id="email" placeholder="Email address" th:field="*{email}" />
+                    <span class="help-block" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Incorrect email</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-offset-2 col-lg-10">
+                    <button type="submit" class="btn btn-default">Remove account</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+</body>
+</html>
