@@ -13,16 +13,16 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HomeController {
 
-	@Autowired
-	private AccountRepository accountRepository;
+    @Autowired
+    private AccountRepository accountRepository;
 
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView index(Principal principal) {
-		List<Account> accounts = accountRepository.getAccounts();
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ModelAndView index(Principal principal) {
+        List<Account> accounts = accountRepository.getAccounts();
 
-		ModelAndView model = new ModelAndView(principal != null ? "home/homeSignedIn" : "home/homeNotSignedIn");
-		model.addObject("accounts", accounts);
-		return model;
-	}
+        ModelAndView model = new ModelAndView(principal != null ? "home/homeSignedIn" : "home/homeNotSignedIn");
+        model.addObject("accounts", accounts);
+        return model;
+    }
 }

@@ -69,8 +69,8 @@
             <!-- Avoid issue #72 Could not initialize class org.thymeleaf.templateresolver.ServletContextTemplateResolver due to 'validation is not supported' -->
             <exclusions>
                 <exclusion>
-            		<artifactId>pull-parser</artifactId>
-            		<groupId>pull-parser</groupId>
+                    <artifactId>pull-parser</artifactId>
+                    <groupId>pull-parser</groupId>
                 </exclusion>
             </exclusions>
         </dependency>

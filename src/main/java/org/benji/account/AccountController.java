@@ -1,7 +1,10 @@
 package org.benji.account;
 
+import java.lang.invoke.MethodHandles;
 import java.security.Principal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
@@ -18,6 +21,8 @@ class AccountController {
 
     private AccountRepository accountRepository;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
     @Autowired
     public AccountController(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
@@ -28,6 +33,7 @@ class AccountController {
     @ResponseBody
     public Account accounts(Principal principal) {
         Assert.notNull(principal);
+        LOGGER.info("test");
         return accountRepository.findByEmail(principal.getName());
     }
 }
