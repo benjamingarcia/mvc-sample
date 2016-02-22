@@ -1,8 +1,5 @@
 package org.benji.config;
 
-import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -32,7 +29,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new StandardPasswordEncoder();
-	}
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

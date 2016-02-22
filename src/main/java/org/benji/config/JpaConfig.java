@@ -68,6 +68,7 @@ class JpaConfig implements TransactionManagementConfigurer {
     }
 
     @Bean
+    @Override
     public PlatformTransactionManager annotationDrivenTransactionManager() {
         return new JpaTransactionManager();
     }
