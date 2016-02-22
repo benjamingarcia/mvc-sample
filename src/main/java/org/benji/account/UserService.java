@@ -16,14 +16,14 @@ public class UserService implements UserDetailsService {
 	@Autowired
 	private AccountRepository accountRepository;
 	
-	@PostConstruct	
+	/*@PostConstruct
 	protected void initialize() {
 		accountRepository.save(new Account("user", "demo", "ROLE_USER"));
 		accountRepository.save(new Account("CentauriTiki@harakirimail.com", "CentauriTiki", "ROLE_ADMIN"));
 		accountRepository.save(new Account("DoroEosaurus@harakirimail.com", "DoroEosaurus", "ROLE_USER"));
 		accountRepository.save(new Account("WillingIsenstein@harakirimail.com", "WillingIsenstein", "ROLE_USER"));
 		accountRepository.save(new Account("HudibrasticAgcy@harakirimail.com", "HudibrasticAgcy", "ROLE_USER"));
-	}
+	}*/
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -31,7 +31,7 @@ public class UserService implements UserDetailsService {
 		if(account == null) {
 			throw new UsernameNotFoundException("user not found");
 		}
-		return createUser(account);
+		return new User(account.getEmail(), account.getPassword(), Collections.singleton(createAuthority(account)));
 	}
 	
 	public void signin(Account account) {
@@ -39,12 +39,9 @@ public class UserService implements UserDetailsService {
 	}
 	
 	private Authentication authenticate(Account account) {
-		return new UsernamePasswordAuthenticationToken(createUser(account), null, Collections.singleton(createAuthority(account)));
+		return new UsernamePasswordAuthenticationToken(account.getEmail(), account.getPassword(), Collections.singleton(createAuthority(account)));
 	}
 
-	private User createUser(Account account) {
-		return new User(account.getEmail(), account.getPassword(), Collections.singleton(createAuthority(account)));
-	}
 
 	private GrantedAuthority createAuthority(Account account) {
 		return new SimpleGrantedAuthority(account.getRole());

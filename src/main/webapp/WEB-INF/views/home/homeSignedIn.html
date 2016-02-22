@@ -16,26 +16,11 @@
         <!-- /* The message code is returned from the @Controller */ -->
         <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=#{${message.message}(${#authentication.name})})">&nbsp;</div>
     </th:block>
-
     <p>
         Welcome to the Spring MVC Quickstart application!
     </p>
-    <p>
-        <th:block th:if="${accounts != null}">
-            <table class="table table-striped">
-                <tr>
-                    <th>ID</th>
-                    <th>EMAIL</th>
-                    <th>ROLE</th>
-                </tr>
-                <tr th:each="account,iterationStatus  : ${accounts}">
-                <!--/*@thymesVar id="account" type="org.benji.account.Account"*/-->
-                    <td th:text="${account.id}">001</td>
-                    <td th:text="${account.email}">email</td>
-                    <td th:text="${account.role}">role</td>
-                </tr>
-            </table>
-        </th:block>
+    <p th:text="#{countAccounts.message(${countAccounts})}">
+        There are 1555 users
     </p>
 </div>
 </body>

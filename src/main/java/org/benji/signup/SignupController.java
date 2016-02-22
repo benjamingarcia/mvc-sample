@@ -16,6 +16,7 @@ import org.benji.support.web.*;
 public class SignupController {
 
     private static final String SIGNUP_VIEW_NAME = "signup/signup";
+	private static final String SIGNUP_OK_VIEW_NAME = "/";
 
 	@Autowired
 	private AccountRepository accountRepository;
@@ -23,10 +24,10 @@ public class SignupController {
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping(value = "signup")
+	@RequestMapping(value = "signup", method = RequestMethod.GET)
 	public String signup(Model model) {
 		model.addAttribute(new SignupForm());
-        return SIGNUP_VIEW_NAME;
+		return SIGNUP_VIEW_NAME;
 	}
 	
 	@RequestMapping(value = "signup", method = RequestMethod.POST)
@@ -38,6 +39,6 @@ public class SignupController {
 		userService.signin(account);
         // see /WEB-INF/i18n/messages.properties and /WEB-INF/views/homeSignedIn.html
         MessageHelper.addSuccessAttribute(ra, "signup.success");
-		return "redirect:/";
+		return "redirect:"+SIGNUP_OK_VIEW_NAME;
 	}
 }
